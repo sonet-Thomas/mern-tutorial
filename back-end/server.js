@@ -2,6 +2,22 @@ const express=require('express');
 const app=express();
 require('dotenv').config()
 const data=require('./data/note')
+// const cors = require('cors');
+
+// const corsOptions = {
+//     origin: '*',
+// }
+// app.use(cors());
+
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', "http://localhost:3000");
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+      );
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+      next();
+});
 
 console.log(process.env.PORT)
 const PORT= process.env.PORT;

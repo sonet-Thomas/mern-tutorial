@@ -13,7 +13,7 @@ const LandingPage = () => {
                 <h1 className='title'>Welcome to node Zipper</h1>
                 <p className='subtitleS'>one safe place for all your Notes</p>
                 </div>
-                <div className='button-container'>
+                <div className='buttoncontainer'>
                 <a href='/login'>
                     <Button size='lg' className='landingbutton'>Login</Button>
                 </a>

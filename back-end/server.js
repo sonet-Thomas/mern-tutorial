@@ -2,6 +2,7 @@ const express=require('express');
 const app=express();
 require('dotenv').config()
 const data=require('./data/note')
+const connectDB=require("./config/db")
 // const cors = require('cors');
 
 // const corsOptions = {
@@ -9,6 +10,7 @@ const data=require('./data/note')
 // }
 // app.use(cors());
 
+connectDB();
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', "http://localhost:3000");
     res.setHeader(

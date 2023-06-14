@@ -23,6 +23,7 @@ else{
             email:user.email,
             isAdmin:user.isAdmin,
             pic:user.pic,
+            token:generateToken(user._id)
         });
     }
 }
@@ -42,9 +43,10 @@ else{
 const authUser= asyncHandler( async(req,res)=>{
     const {email,password}=req.body;
     const user= await User.findOne({email});
-    const userExist=await User.findOne({email});
-    const ab=user.matchPassword(password)
-    console.log(ab);
+    console.log(user);
+    // const userExist=await User.findOne({email});
+    // const ab=user.User.comparePassword(password)
+    // console.log(ab);
     if(user && (user.matchPassword(password))){
         res.send({
             id:user._id,
@@ -52,6 +54,7 @@ const authUser= asyncHandler( async(req,res)=>{
             email:user.email,
             isAdmin:user.isAdmin,
             pic:user.pic,
+            token:generateToken(user._id)
         })
     }
     else {
@@ -71,6 +74,7 @@ res.send(data);
  }
 const express=require('express');
 const { error } = require("console");
+const generateToken = require("../utils/generateToken");
 const router=express.Router();
 const getData=()=>{
     router.get('/',(req,res)=>{

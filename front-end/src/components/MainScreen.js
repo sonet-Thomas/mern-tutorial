@@ -10,7 +10,7 @@ const MainScreen = ({title,children}) => {
             <Row>
                 <div className='page'>
                     {title && (
-                        <h1 className='heading'>
+                        <h1>
                             {title}
                         </h1>
                     )}

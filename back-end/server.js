@@ -4,17 +4,20 @@ require('dotenv').config()
 const data=require('./data/note')
 const connectDB=require("./config/db")
 const userRoutes=require('./routes/userRouts');
+const notesRoutes=require('./routes/noteRoute')
 // const { noteFound} = require('./middlewares/errorMiddileware');
 const {ErrorHandler,notFound} =require('./middlewares/errorMiddileware');
 
+const path = require('path');
+
 const router = express.Router()
 app.use(express.json());
-// const cors = require('cors');
+const cors = require('cors');
 
-// const corsOptions = {
-//     origin: '*',
-// }
-// app.use(cors());
+const corsOptions = {
+    origin: '*',
+}
+app.use(cors());
 
 connectDB();
 // app.use(express.json())
@@ -35,12 +38,39 @@ app.use(function (req, res, next) {
 //   res.json({"error":"an error occured"})
 //     next();
 // });
-
+// app.use(express.static('public'))
 console.log(process.env.PORT)
 const PORT= process.env.PORT;
-// app.get("/",(req,res)=>{res.send("Api is running")});
 
-app.get("/api/notes",(req,res)=>{res.json(data)})
+
+
+
+
+function  getDetails(){
+  return new Promise((resole,reject)=>{
+    setTimeout(()=>{return reject("Rejected")},1000)  
+  })
+  return Promise.resolve("success")
+}
+
+
+
+app.get("/promise",async(req,res)=>{
+  console.log("before promise")
+ getDetails().then((dt)=>{
+  console.log("data from callback=>",dt);
+  res.send(dt)
+ }).catch((e)=>{
+  console.log("rejected",e)
+  res.status(500).send(e)
+ })
+
+ console.log("After promise")
+
+
+
+})
+
 
 app.get("/api/notes/:id",(req,res)=>{
     const result=data.find((n)=>n._id===req.params.id);
@@ -95,5 +125,7 @@ app.get("/api/notes/:id",(req,res)=>{
     console.log("home page route")
   })
 //   app.use(express.json());
+app.use("/api/notes",notesRoutes)
 app.use('/api/users',userRoutes);
+app.get("*",(req,res)=>{res.sendFile(path.join(__dirname, '/public/build/index.html'));});
 app.listen(PORT, console.log(`Application Successfully started on port ${PORT}`));

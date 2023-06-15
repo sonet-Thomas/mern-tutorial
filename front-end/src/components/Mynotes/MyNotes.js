@@ -44,7 +44,7 @@ const MyNotes = () => {
                             </Card.Header>
                             <Card.Body>
                                 {note.content}
-                                <footer className='blackQuote-footer'>created-on -date</footer>
+                                <footer className='blackQuote-footer'>created-on -{note.createdAt}</footer>
                             </Card.Body>
                         </Card>
                     ))

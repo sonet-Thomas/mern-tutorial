@@ -1,41 +1,67 @@
 import React, { useState } from 'react'
 import MainScreen from '../MainScreen'
-import { Card,Form } from 'react-bootstrap'
-import { error } from 'console'
+import { Card,Form ,Button} from 'react-bootstrap'
 import ErrorMessage from '../Screen/ErrorMessage'
+import {useDispatch,useSelector} from "react-redux"
+import {createNotesData } from "../../actions/notesAction"
+import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+
 
 
 function CreateNotes() {
+  const dispatch=useDispatch()
+  
+  
+  const noteCreate=useSelector((state)=>state.noteCreate)
+
+  const {loading,error,note}=noteCreate
   const [title,setTitle]=useState('');
   const [content,setContent]=useState('');
   const [category,SetCategory]=useState('');
-  const submitHandler=()=>{
-    
+
+ 
+  const submitHandler=(e)=>{
+     e.preventDefault();
+dispatch(createNotesData(title,content,category))
+// if(note){
+ window.location="/myNotes";
+// }
   }
-  return (<>
+
+  const resetHandler=()=>{
+setTitle('');
+setContent('');
+SetCategory('');
+
+  }
+
+
+  return (
     <MainScreen title="Create a NOtes">
       <Card>
         <Card.Header>Create a new Note</Card.Header>
         <Card.Body>
           <Form onSubmit={submitHandler}>
-          {error && <ErrorMessage varient='danger'>{error}</ErrorMessage>}
+          {error && (<ErrorMessage varien="danger">{error}</ErrorMessage>)}
           <Form.Group controlId='title'>
             <Form.Label>Title</Form.Label>
-            <Form.Control>
+            <Form.Control
               type="text"
               value={title}
               placeholder="Enter the title"
               onChange={(e)=>setTitle(e.target.value)}
-            </Form.Control>
+            />
           </Form.Group>
           <Form.Group controlId='content'>
             <Form.Label>Title</Form.Label>
-            <Form.Control>
+            <Form.Control
               type="text"
               value={content}
               placeholder="Enter the title"
               onChange={(e)=>setContent(e.target.value)}
-            </Form.Control>
+          />
           </Form.Group>
           {content && (
             <Card>
@@ -47,18 +73,21 @@ function CreateNotes() {
           )}
             <Form.Group controlId='category'>
             <Form.Label>Category</Form.Label>
-            <Form.Control>
+            <Form.Control
               type="text"
               value={category}
               placeholder="Enter the title"
               onChange={(e)=>SetCategory(e.target.value)}
-            </Form.Control>
+            />
           </Form.Group>
+          <Button variant="primary" type="submit">Create Note</Button>
+          <Button variant="danger" onClick={()=>resetHandler()}>Reset Fields</Button>
           </Form>
         </Card.Body>
+        <Card.Footer>{new Date().toLocaleDateString()}</Card.Footer>
       </Card>
     </MainScreen>
-    </>
+    
   )
 }
 
